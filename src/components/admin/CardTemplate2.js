@@ -16,8 +16,26 @@ import QRCode from 'qrcode.react';
 
 const CardTemplate2 = ({ card }) => {
   const handleQRCodeOpen = () => {
-    // Open QR code in new window
-    window.open(card.qrCode, '_blank');
+    const vCardData = `
+      BEGIN:VCARD
+      VERSION:3.0
+      FN:${card.name}
+      ORG:${card.company}
+      TITLE:${card.title}
+      TEL;TYPE=work:${card.phone}
+      EMAIL:${card.email}
+      URL:${card.website}
+      ${card.linkedin ? `X-SOCIALPROFILE;type=linkedin:${card.linkedin}\n` : ''}
+      ${card.twitter ? `X-SOCIALPROFILE;type=twitter:${card.twitter}\n` : ''}
+      ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
+      ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
+      NOTE:Core Services:${card.services || ''}
+      END:VCARD
+    `.trim().replace(/\n\s*/g, '\n');
+
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(vCardData)}&size=200x200`;
+
+    window.open(qrCodeUrl, '_blank');
   };
 
   const handleEmailShare = () => {
@@ -105,7 +123,22 @@ const CardTemplate2 = ({ card }) => {
         <Typography variant="body1" gutterBottom>QR Code:</Typography>
         <Box display="flex" justifyContent="center" mb={1}>
           <QRCode
-            value={card.qrCode} // Display the updated QR code
+            value={`
+              BEGIN:VCARD
+              VERSION:3.0
+              FN:${card.name}
+              ORG:${card.company}
+              TITLE:${card.title}
+              TEL;TYPE=work:${card.phone}
+              EMAIL:${card.email}
+              URL:${card.website}
+              ${card.linkedin ? `X-SOCIALPROFILE;type=linkedin:${card.linkedin}\n` : ''}
+              ${card.twitter ? `X-SOCIALPROFILE;type=twitter:${card.twitter}\n` : ''}
+              ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
+              ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
+              NOTE:Core Services:${card.services || ''}
+              END:VCARD
+            `}
             size={80}
           />
         </Box>
