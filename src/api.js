@@ -5,8 +5,6 @@ const api = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL, // Use environment variable for baseURL
 });
 
-console.log('API Base URL:', baseURL);
-
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) {
