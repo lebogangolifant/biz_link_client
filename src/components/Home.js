@@ -1,22 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Button,
-  Container,
-  Typography,
-  Box,
-  Grid,
-  Paper,
-  IconButton,
-  TextField,
-  FormGroup,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormControlLabel,
-  Checkbox,
-} from '@mui/material';
+import { Button, Container, Typography, Box, Grid, Paper, IconButton, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import {
   AccountBoxOutlined as AccountBoxIcon,
   CasesOutlined as CasesIcon,
@@ -27,6 +11,7 @@ import {
 } from '@mui/icons-material';
 import { useTheme } from './contexts/ThemeContext';
 import './styles/App.css';
+import api from '../api';
 
 const Home = () => {
   const { theme, toggleTheme } = useTheme();
@@ -43,75 +28,53 @@ const Home = () => {
     file: null,
   });
   const [formErrors, setFormErrors] = useState({});
-  const [formSubmitted, setFormSubmitted] = useState(false);
 
-  // Function to toggle form visibility
-  const toggleForm = () => {
-    setShowForm(!showForm);
-    setFormErrors({});
-    setFormSubmitted(false);
-  };
-
-  // Function to handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    setFormErrors({
-      ...formErrors,
-      [name]: null, // Clear validation error on change
-    });
+    setFormData({ ...formData, [name]: value });
+    setFormErrors({ ...formErrors, [name]: '' });
   };
 
-  // Function to handle file upload
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      file: file,
-    });
+    setFormData({ ...formData, file });
   };
 
-  // Function to validate form inputs
-  const validateForm = () => {
-    let errors = {};
-    if (!formData.email) {
-      errors.email = 'Email is required';
-    }
-    if (!formData.companyName) {
-      errors.companyName = 'Company Name / Individual is required';
-    }
-    if (!formData.numberOfCards) {
-      errors.numberOfCards = 'Number of Cards is required';
-    }
-    if (!formData.cardType) {
-      errors.cardType = 'Card Type is required';
-    }
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  // Function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const isValid = validateForm();
-    if (isValid) {
-      // Simulate sending email (replace with actual submission logic)
-      console.log('Form data:', formData);
-      // Clear form after submission
-      setFormData({
-        email: '',
-        companyName: '',
-        numberOfCards: '',
-        cardType: '',
-        message: '',
-        file: null,
-      });
-      setFormSubmitted(true);
-      // Close the form
-      toggleForm();
+
+    // Validation
+    let errors = {};
+    if (!formData.email) errors.email = 'Email is required';
+    if (!formData.companyName) errors.companyName = 'Company Name / Individual is required';
+    if (!formData.numberOfCards) errors.numberOfCards = 'Number of Cards is required';
+    if (!formData.cardType) errors.cardType = 'Card Type is required';
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    try {
+      // Submit form data to backend
+      const formDataToSend = new FormData();
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('companyName', formData.companyName);
+      formDataToSend.append('numberOfCards', formData.numberOfCards);
+      formDataToSend.append('cardType', formData.cardType);
+      formDataToSend.append('message', formData.message);
+      if (formData.file) {
+        formDataToSend.append('file', formData.file);
+      }
+
+      await api.post('/orders', formDataToSend);
+
+      // Show success message or redirect as needed
+      alert('Order/Inquire submitted successfully!');
+      setShowForm(false);
+    } catch (error) {
+      console.error('Error submitting card order:', error);
+      alert('Failed to submit card order. Please try again.');
     }
   };
 
@@ -137,28 +100,18 @@ const Home = () => {
           {/* Order Card Button */}
           <Button
             variant="outlined"
-            color="primary"
-            onClick={toggleForm}
+            color="secondary"
+            onClick={() => setShowForm(true)}
           >
             Order Card
           </Button>
         </Box>
 
-        {/* Explanation Box */}
-        <Box my={4} p={2} sx={{ backgroundColor: isDarkMode ? '#333' : '#fff', color: isDarkMode ? '#aaa' : '#000', borderRadius: 2 }}>
-          <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
-            Why Use NFC Business Cards?
-          </Typography>
-          <Typography variant="body1" gutterBottom sx={{ fontFamily: 'Roboto, sans-serif' }}>
-            NFC (Near Field Communication) technology enables seamless digital interactions with a simple tap. NFC business cards provide enhanced durability and allow recipients to access your contact information effortlessly.
-          </Typography>
-        </Box>
-
-        {/* Order/Inquire Form */}
+        {/* Order Form */}
         {showForm && (
           <Box sx={{ p: 2, backgroundColor: isDarkMode ? '#333' : '#fff', borderRadius: 2 }}>
             <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: isDarkMode ? '#fff' : '#000' }}>
-              Contact Form
+              Order Form
             </Typography>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
@@ -176,7 +129,7 @@ const Home = () => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    label="Company Name / Individual"
+                    label="Company / Individual"
                     name="companyName"
                     value={formData.companyName}
                     onChange={handleInputChange}
@@ -234,16 +187,29 @@ const Home = () => {
                   >
                     Submit
                   </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => setShowForm(false)}
+                    sx={{ marginLeft: 2 }}
+                  >
+                    Close
+                  </Button>
                 </Grid>
               </Grid>
             </form>
-            {formSubmitted && (
-              <Typography variant="body2" sx={{ marginTop: 2 }}>
-                Thank you for your submission!
-              </Typography>
-            )}
           </Box>
         )}
+
+        {/* Explanation Box */}
+        <Box my={4} p={2} sx={{ backgroundColor: isDarkMode ? '#333' : '#fff', color: isDarkMode ? '#aaa' : '#000', borderRadius: 2 }}>
+          <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500 }}>
+            Why Use NFC Business Cards?
+          </Typography>
+          <Typography variant="body1" gutterBottom sx={{ fontFamily: 'Roboto, sans-serif' }}>
+            NFC (Near Field Communication) technology enables seamless digital interactions with a simple tap. NFC business cards provide enhanced durability and allow recipients to access your contact information effortlessly.
+          </Typography>
+        </Box>
 
         {/* Feature Cards */}
         <Grid container spacing={3} justifyContent="center">
@@ -346,4 +312,3 @@ const Home = () => {
 };
 
 export default Home;
-
