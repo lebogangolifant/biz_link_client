@@ -129,7 +129,7 @@ const Home = () => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    label="Company / Individual"
+                    label="Company Name / Individual"
                     name="companyName"
                     value={formData.companyName}
                     onChange={handleInputChange}
