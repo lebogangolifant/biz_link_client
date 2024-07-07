@@ -14,29 +14,19 @@ import {
   GetApp as GetAppIcon,
 } from '@mui/icons-material';
 import QRCode from 'qrcode.react';
+import qrcode from 'qrcode';
 
 const CardTemplate1 = ({ card }) => {
   const handleQRCodeOpen = () => {
-    const vCardData = `
-      BEGIN:VCARD
-      VERSION:3.0
-      FN:${card.name}
-      ORG:${card.company}
-      TITLE:${card.title}
-      TEL;TYPE=work:${card.phone}
-      EMAIL:${card.email}
-      URL:${card.website}
-      ${card.linkedin ? `X-SOCIALPROFILE;type=linkedin:${card.linkedin}\n` : ''}
-      ${card.twitter ? `X-SOCIALPROFILE;type=twitter:${card.twitter}\n` : ''}
-      ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
-      ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
-      NOTE:Core Services:${card.services || ''}
-      END:VCARD
-    `.trim().replace(/\n\s*/g, '\n');
-
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(vCardData)}&size=200x200`;
-
-    window.open(qrCodeUrl, '_blank');
+    const qrCodeUrl = `${process.env.REACT_APP_BASE_URL}/cards/${card._id}`;
+    qrcode.toDataURL(qrCodeUrl, (err, url) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const qrWindow = window.open();
+      qrWindow.document.write(`<img src="${url}" />`);
+    });
   };
 
   const handleEmailShare = () => {
@@ -51,6 +41,35 @@ const CardTemplate1 = ({ card }) => {
 
   const handleWebsiteSave = () => {
     window.open(card.website, '_blank');
+  };
+
+  const handleVCardDownload = () => {
+    const vCardData = `
+      BEGIN:VCARD
+      VERSION:3.0
+      FN:${card.name}
+      ORG:${card.company}
+      TITLE:${card.title}
+      TEL;TYPE=work:${card.phone}
+      EMAIL:${card.email}
+      URL:${card.website}
+      ${card.linkedin ? `X-SOCIALPROFILE;type=linkedin:${card.linkedin}\n` : ''}
+      ${card.twitter ? `X-SOCIALPROFILE;type=twitter:${card.twitter}\n` : ''}
+      ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
+      ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
+      PHOTO;VALUE=URL:${card.profilePicture || ''}
+      NOTE:Core Services:${card.services || ''}
+      END:VCARD
+    `.trim().replace(/\n\s*/g, '\n');
+
+    const blob = new Blob([vCardData], { type: 'text/vcard' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${card.name}.vcf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   return (
@@ -123,33 +142,18 @@ const CardTemplate1 = ({ card }) => {
           </Box>
         </Box>
         <Divider sx={{ marginY: 2 }} />
-        <Typography variant="body1" gutterBottom>QR Code:</Typography>
-        <Box display="flex" justifyContent="center" mb={1}>
-          <QRCode
-            value={`
-              BEGIN:VCARD
-              VERSION:3.0
-              FN:${card.name}
-              ORG:${card.company}
-              TITLE:${card.title}
-              TEL;TYPE=work:${card.phone}
-              EMAIL:${card.email}
-              URL:${card.website}
-              ${card.linkedin ? `X-SOCIALPROFILE;type=linkedin:${card.linkedin}\n` : ''}
-              ${card.twitter ? `X-SOCIALPROFILE;type=twitter:${card.twitter}\n` : ''}
-              ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
-              ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
-              NOTE:Core Services:${card.services || ''}
-              END:VCARD
-            `}
-            size={80}
-          />
-        </Box>
-        <Box display="flex" justifyContent="center">
-          <IconButton onClick={handleQRCodeOpen}>
-            <GetAppIcon fontSize="small" />
-          </IconButton>
-        </Box>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <QRCode value={`${process.env.REACT_APP_BASE_URL}/cards/${card._id}`} size={128} />
+            <IconButton onClick={handleQRCodeOpen}>
+              <GetAppIcon fontSize="small" />
+            </IconButton>
+          </Box>
+          <Divider sx={{ marginY: 2 }} />
+          <Box display="flex" justifyContent="center" mb={1}>
+            <IconButton onClick={handleVCardDownload}>
+              <SaveAltIcon />
+            </IconButton>
+          </Box>
       </CardContent>
     </Card>
   );
