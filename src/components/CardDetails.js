@@ -11,7 +11,7 @@ const CardDetails = () => {
   useEffect(() => {
     const fetchCard = async () => {
       try {
-        const response = await api.get(`/cards/${id}`);
+        const response = await api.get(`api/cards/${id}`);
         setCard(response.data);
       } catch (error) {
         console.error('Error fetching card details:', error);
