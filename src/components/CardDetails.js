@@ -2,17 +2,28 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api';
-import CardTemplate1 from './admin/CardTemplate1';
+import CardTemplate1 from './CardTemplate1';
 
 const CardDetails = () => {
   const { id } = useParams();
   const [card, setCard] = useState(null);
+  const [cardHtml, setCardHtml] = useState('');
 
-  useEffect(() => {
+   useEffect(() => {
     const fetchCard = async () => {
       try {
-        const response = await api.get(`api/cards/${id}`);
-        setCard(response.data);
+        const response = await api.get(`/cards/${id}`, {
+          headers: {
+            'Accept': 'text/html',
+          },
+          responseType: 'text'
+        });
+
+        if (response.headers['content-type'].includes('text/html')) {
+          setCardHtml(response.data);
+        } else {
+          setCard(JSON.parse(response.data));
+        }
       } catch (error) {
         console.error('Error fetching card details:', error);
       }
@@ -21,8 +32,12 @@ const CardDetails = () => {
     fetchCard();
   }, [id]);
 
-  if (!card) {
+  if (!card && !cardHtml) {
     return <div>Loading...</div>;
+  }
+
+  if (cardHtml) {
+    return <div dangerouslySetInnerHTML={{ __html: cardHtml }} />;
   }
 
   return <CardTemplate1 card={card} />;
