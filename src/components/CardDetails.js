@@ -12,7 +12,7 @@ const CardDetails = () => {
    useEffect(() => {
     const fetchCard = async () => {
       try {
-        const response = await api.get(`/cards/${id}`, {
+        const response = await api.get(`/cards/${card._id}`, {
           headers: {
             'Accept': 'text/html',
           },
