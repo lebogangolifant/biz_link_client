@@ -1,29 +1,22 @@
 // src/components/CardDetails.js
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import api from '../api';
-import CardTemplate1 from './CardTemplate1';
+import api from '../api'; // Import the configured axios instance
 
 const CardDetails = () => {
   const { id } = useParams();
-  const [card, setCard] = useState(null);
-  const [cardHtml, setCardHtml] = useState('');
+  const [cardHTML, setCardHTML] = useState(null);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchCard = async () => {
       try {
         const response = await api.get(`/cards/${id}`, {
           headers: {
-            'Accept': 'text/html',
+            'Accept': 'text/html', // Request HTML response
           },
-          responseType: 'text'
+          responseType: 'text' // Ensure response is treated as text
         });
-
-        if (response.headers['content-type'].includes('text/html')) {
-          setCardHtml(response.data);
-        } else {
-          setCard(JSON.parse(response.data));
-        }
+        setCardHTML(response.data);
       } catch (error) {
         console.error('Error fetching card details:', error);
       }
@@ -32,15 +25,11 @@ const CardDetails = () => {
     fetchCard();
   }, [id]);
 
-  if (!card && !cardHtml) {
+  if (!cardHTML) {
     return <div>Loading...</div>;
   }
 
-  if (cardHtml) {
-    return <div dangerouslySetInnerHTML={{ __html: cardHtml }} />;
-  }
-
-  return <CardTemplate1 card={card} />;
+  return <div dangerouslySetInnerHTML={{ __html: cardHTML }} />;
 };
 
 export default CardDetails;
