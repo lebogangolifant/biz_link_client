@@ -12,17 +12,9 @@ import {
   Business as CompanyIcon,
   SaveAlt as SaveAltIcon,
   MailOutline as MailOutlineIcon,
-  GetApp as GetAppIcon,
 } from '@mui/icons-material';
-import QRCode from 'qrcode.react';
-import api from '../api'; // Import the configured axios instance
 
 const CardTemplate1 = ({ card }) => {
-  const handleQRCodeOpen = () => {
-    const qrCodeUrl = `${process.env.REACT_APP_BASE_URL}/cards/${card._id}`;
-    window.open(qrCodeUrl);
-  };
-
   const handleEmailShare = () => {
     const subject = 'Business Card';
     const body = 'Check out my business card!';
@@ -37,23 +29,33 @@ const CardTemplate1 = ({ card }) => {
     window.open(card.website, '_blank');
   };
 
-  const handleVCardDownload = async () => {
-    try {
-      const response = await api.get(`/cards/${card._id}/vcard`);
-      const vCardData = response.data;
+  const handleVCardDownload = () => {
+    const vCardData = `
+      BEGIN:VCARD
+      VERSION:3.0
+      FN:${card.name}
+      ORG:${card.company}
+      TITLE:${card.title}
+      TEL;TYPE=work:${card.phone}
+      EMAIL:${card.email}
+      URL:${card.website}
+      ${card.linkedin ? `X-SOCIALPROFILE;type=linkedin:${card.linkedin}\n` : ''}
+      ${card.twitter ? `X-SOCIALPROFILE;type=twitter:${card.twitter}\n` : ''}
+      ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
+      ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
+      PHOTO;VALUE=URL:${card.profilePicture || ''}
+      NOTE:Core Services:${card.services || ''}
+      END:VCARD
+    `.trim().replace(/\n\s*/g, '\n');
 
-      const blob = new Blob([vCardData], { type: 'text/vcard' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${card.name}.vcf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Error downloading vCard:', error);
-      // Handle error as needed
-    }
+    const blob = new Blob([vCardData], { type: 'text/vcard' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${card.name}.vcf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   return (
@@ -94,7 +96,7 @@ const CardTemplate1 = ({ card }) => {
             </IconButton>
           </Box>
           <Divider sx={{ marginY: 2 }} />
-          <Typography variant="body1" gutterBottom>Social Media:</Typography>
+	  <Typography variant="body1" gutterBottom>Social Media:</Typography>
           <Box display="flex" justifyContent="center" mb={1}>
             {card.linkedin && (
               <IconButton>
@@ -119,25 +121,18 @@ const CardTemplate1 = ({ card }) => {
           </Box>
           <Divider sx={{ marginY: 2 }} />
           <Box display="flex" alignItems="center" mb={1}>
-            <Typography variant="body1" gutterBottom>Core Services:</Typography>
+          <Typography variant="body1" gutterBottom>Core Services:</Typography>
+	  </Box>
+	  <Box display="flex" alignItems="center" mb={1}>
+          <Typography variant="body2">{card.services}</Typography>
           </Box>
-          <Box display="flex" alignItems="center" mb={1}>
-            <Typography variant="body2">{card.services}</Typography>
+        </Box>
+          <Divider sx={{ marginY: 2 }} />
+          <Box display="flex" justifyContent="center" mb={1}>
+            <IconButton onClick={handleVCardDownload}>
+              <SaveAltIcon />
+            </IconButton>
           </Box>
-        </Box>
-        <Divider sx={{ marginY: 2 }} />
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <QRCode value={`${process.env.REACT_APP_BASE_URL}/cards/${card._id}`} size={128} />
-          <IconButton onClick={handleQRCodeOpen}>
-            <GetAppIcon fontSize="small" />
-          </IconButton>
-        </Box>
-        <Divider sx={{ marginY: 2 }} />
-        <Box display="flex" justifyContent="center" mb={1}>
-          <IconButton onClick={handleVCardDownload}>
-            <SaveAltIcon />
-          </IconButton>
-        </Box>
       </CardContent>
     </Card>
   );
