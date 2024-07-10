@@ -10,7 +10,7 @@ import Register from './components/auth/Register';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import CardDetails from './components/CardDetails';
-import CardTemplate1 from './components/admin/CardTemplate1';
+import CardTemplate1 from './components/CardTemplate1';
 
 function App() {	
   const { theme } = useTheme();
@@ -32,7 +32,7 @@ function App() {
 	    <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 	    <Route path="/cards/:id" element={<CardDetails />} />
-	    <Route path="/cards/:id" element={<CardTemplate1 />} />
+	    <Route path="/cards/:id/template" element={<CardTemplate1 />} />
           </Routes>
         </Router>
       </ThemeProvider>
