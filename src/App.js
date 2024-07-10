@@ -11,6 +11,7 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import CardDetails from './components/CardDetails';
 import CardTemplate1 from './components/CardTemplate1';
+import CardTemplate1Wrapper from './components/CardTemplate1Wrapper';
 
 function App() {	
   const { theme } = useTheme();
