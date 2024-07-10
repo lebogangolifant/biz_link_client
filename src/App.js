@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { useTheme } from './components/contexts/ThemeContext';
 import './components/styles/App.css';
@@ -10,7 +10,6 @@ import Register from './components/auth/Register';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import CardDetails from './components/CardDetails';
-import CardTemplate1 from './components/CardTemplate1';
 import CardTemplate1Wrapper from './components/CardTemplate1Wrapper';
 
 function App() {	
@@ -39,12 +38,5 @@ function App() {
       </ThemeProvider>
   );
 }
-
-const CardTemplate1Wrapper = () => {
-  const location = useLocation();
-  const card = location.state?.card;
-
-  return <CardTemplate1 card={card} />;
-};
 
 export default App;
