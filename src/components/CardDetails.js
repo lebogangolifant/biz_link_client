@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api';
-import CardTemplate1 from './CardTemplate1';
+import CardTemplate1 from './admin/CardTemplate1';
 
 const CardDetails = () => {
   const { id } = useParams();
