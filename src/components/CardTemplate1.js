@@ -10,6 +10,10 @@ import {
 import QRCode from 'qrcode.react';
 
 const CardTemplate1 = ({ card }) => {
+  if (!card) {
+    return <div>No card data available</div>;
+  }
+
   const handleAddToContacts = () => {
     const vCardData = `
       BEGIN:VCARD

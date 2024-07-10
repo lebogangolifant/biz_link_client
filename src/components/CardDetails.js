@@ -1,9 +1,8 @@
 // src/components/CardDetails.js
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../api';
 //import CardTemplate1 from './CardTemplate1';
-import { Link } from 'react-router-dom';
 
 const CardDetails = () => {
   const { id } = useParams();
@@ -33,7 +32,7 @@ const CardDetails = () => {
         <h2>{card.name}</h2>
         <p>{card.title}</p>
         {/* Add other fields as necessary */}
-        <Link to={`/cards/${id}/template`}>View Template</Link>
+        <Link to={`/cards/${id}/template`} state={{ card }}>View Template</Link>
       </div>
     </>
   );
