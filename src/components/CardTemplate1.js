@@ -15,7 +15,7 @@ import {
   GetApp as GetAppIcon,
 } from '@mui/icons-material';
 import QRCode from 'qrcode.react';
-import api from '../api';
+import api from '../api'; // Import the configured axios instance
 
 const CardTemplate1 = ({ card }) => {
   const handleQRCodeOpen = () => {
@@ -39,10 +39,11 @@ const CardTemplate1 = ({ card }) => {
 
   const handleVCardDownload = async () => {
     try {
-      const response = await api.get(`/cards/${card._id}/vcard`, { responseType: 'blob' });
+      const response = await api.get(`/cards/${card._id}/vcard`);
       const vCardData = response.data;
 
-      const url = URL.createObjectURL(vCardData);
+      const blob = new Blob([vCardData], { type: 'text/vcard' });
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `${card.name}.vcf`;
@@ -51,6 +52,7 @@ const CardTemplate1 = ({ card }) => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading vCard:', error);
+      // Handle error as needed
     }
   };
 
