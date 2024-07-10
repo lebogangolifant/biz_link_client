@@ -1,5 +1,5 @@
 // src/components/CardTemplate1.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Divider, Box, IconButton } from '@mui/material';
 import {
   Email as EmailIcon,
@@ -13,8 +13,9 @@ import {
   SaveAlt as SaveAltIcon,
   MailOutline as MailOutlineIcon,
 } from '@mui/icons-material';
+import api from '../api';
 
-const CardTemplate1 = ({ card }) => {
+const CardTemplate1 = ({ cardId }) => {
   const [card, setCard] = useState(null);
 
   useEffect(() => {
