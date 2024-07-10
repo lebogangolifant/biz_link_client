@@ -15,6 +15,25 @@ import {
 } from '@mui/icons-material';
 
 const CardTemplate1 = ({ card }) => {
+  const [card, setCard] = useState(null);
+
+  useEffect(() => {
+    const fetchCard = async () => {
+      try {
+        const response = await api.get(`/cards/${cardId}`);
+        setCard(response.data);
+      } catch (error) {
+        console.error('Error fetching card:', error);
+      }
+    };
+    fetchCard();
+  }, [cardId]);
+
+  if (!card) {
+    return <div>Loading...</div>;
+  }
+
+
   const handleEmailShare = () => {
     const subject = 'Business Card';
     const body = 'Check out my business card!';
