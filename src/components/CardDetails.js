@@ -18,23 +18,40 @@ const CardDetails = () => {
       }
     };
 
-    if (id) {
-      fetchCard();
-    }
+    fetchCard();
   }, [id]);
+
+  const downloadVCard = async () => {
+    try {
+      const response = await api.get(`/cards/${id}?format=vcf`, {
+        responseType: 'blob',
+      });
+
+      // Create a blob from the response data
+      const vCardBlob = new Blob([response.data], { type: 'text/vcard' });
+
+      // Create a URL for the blob
+      const vCardURL = URL.createObjectURL(vCardBlob);
+
+      // Create an <a> element to trigger download
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = vCardURL;
+      a.download = `${card.name}.vcf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Clean up by revoking the object URL
+      URL.revokeObjectURL(vCardURL);
+    } catch (error) {
+      console.error('Error downloading vCard:', error);
+    }
+  };
 
   if (!card) {
     return <div>Loading...</div>;
   }
-
-  const downloadVCard = () => {
-    // Check if the card exists before attempting to download
-    if (card._id) {
-      window.location.href = `/api/cards/${card._id}?format=vcf`;
-    } else {
-      console.error('Card ID not available for download');
-    }
-  };
 
   return (
     <div>
