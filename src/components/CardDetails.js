@@ -21,37 +21,13 @@ const CardDetails = () => {
     fetchCard();
   }, [id]);
 
-  const downloadVCard = async () => {
-    try {
-      const response = await api.get(`/cards/${id}?format=vcf`, {
-        responseType: 'blob',
-      });
-
-      // Create a blob from the response data
-      const vCardBlob = new Blob([response.data], { type: 'text/vcard' });
-
-      // Create a URL for the blob
-      const vCardURL = URL.createObjectURL(vCardBlob);
-
-      // Create an <a> element to trigger download
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = vCardURL;
-      a.download = `${card.name}.vcf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      // Clean up by revoking the object URL
-      URL.revokeObjectURL(vCardURL);
-    } catch (error) {
-      console.error('Error downloading vCard:', error);
-    }
-  };
-
-  if (!card) {
+ if (!card) {
     return <div>Loading...</div>;
   }
+
+  const downloadVCard = () => {
+    window.location.href = `/api/cards/${id}?format=vcf`;
+  };
 
   return (
     <div>
