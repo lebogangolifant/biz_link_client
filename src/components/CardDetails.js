@@ -18,7 +18,9 @@ const CardDetails = () => {
       }
     };
 
-    fetchCard();
+    if (id) {
+      fetchCard();
+    }
   }, [id]);
 
   if (!card) {
