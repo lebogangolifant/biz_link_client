@@ -26,7 +26,12 @@ const CardDetails = () => {
   }
 
   const downloadVCard = () => {
-    window.location.href = `/api/cards/${id}?format=vcf`;
+    // Check if the card exists before attempting to download
+    if (card._id) {
+      window.location.href = `/api/cards/${card._id}?format=vcf`;
+    } else {
+      console.error('Card ID not available for download');
+    }
   };
 
   return (
