@@ -25,7 +25,16 @@ const CardDetails = () => {
     return <div>Loading...</div>;
   }
 
-  return <CardTemplate1 card={card} />;
+  const downloadVCard = () => {
+    window.location.href = `/api/cards/${id}?format=vcf`;
+  };
+
+  return (
+    <div>
+      <CardTemplate1 card={card} />
+      <button onClick={downloadVCard}>Download vCard</button>
+    </div>
+  );
 };
 
 export default CardDetails;
