@@ -5,7 +5,7 @@ import {
   Phone as PhoneIcon,
   Language as WebsiteIcon,
   LinkedIn as LinkedInIcon,
-  Twitter as TwitterIcon,
+  X as XIcon,
   Instagram as InstagramIcon,
   Facebook as FacebookIcon,
   Business as CompanyIcon,
@@ -54,7 +54,7 @@ const CardTemplate1 = ({ card }) => {
       EMAIL:${card.email}
       URL:${card.website}
       ${card.linkedin ? `X-SOCIALPROFILE;type=linkedin:${card.linkedin}\n` : ''}
-      ${card.twitter ? `X-SOCIALPROFILE;type=twitter:${card.twitter}\n` : ''}
+      ${card.x ? `X-SOCIALPROFILE;type=twitter:${card.x}\n` : ''}
       ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
       ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
       PHOTO;VALUE=URL:${card.profilePicture || ''}
@@ -117,9 +117,9 @@ const CardTemplate1 = ({ card }) => {
                 <LinkedInIcon />
               </IconButton>
             )}
-            {card.twitter && (
+            {card.x && (
               <IconButton>
-                <TwitterIcon />
+                <XIcon />
               </IconButton>
             )}
             {card.instagram && (

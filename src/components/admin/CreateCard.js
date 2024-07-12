@@ -10,7 +10,7 @@ const CreateCard = ({ onCreateCard, folders = [], onEditCard, setShowForm, owner
     phone: '',
     website: '',
     linkedin: '',
-    twitter: '',
+    x: '',
     instagram: '',
     facebook: '',
     services: '',
@@ -65,7 +65,7 @@ const CreateCard = ({ onCreateCard, folders = [], onEditCard, setShowForm, owner
         phone: '',
         website: '',
         linkedin: '',
-        twitter: '',
+        x: '',
         instagram: '',
         facebook: '',
         services: '',
@@ -92,7 +92,7 @@ const CreateCard = ({ onCreateCard, folders = [], onEditCard, setShowForm, owner
       <TextField label="Phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} fullWidth error={!!errors.phone} helperText={errors.phone} required />
       <TextField label="Website" name="website" type="url" value={formData.website} onChange={handleChange} fullWidth error={!!errors.website} helperText={errors.website} required />
       <TextField label="LinkedIn" name="linkedin" value={formData.linkedin} onChange={handleChange} fullWidth />
-      <TextField label="Twitter" name="twitter" value={formData.twitter} onChange={handleChange} fullWidth />
+      <TextField label="X" name="x" value={formData.x} onChange={handleChange} fullWidth />
       <TextField label="Instagram" name="instagram" value={formData.instagram} onChange={handleChange} fullWidth />
       <TextField label="Facebook" name="facebook" value={formData.facebook} onChange={handleChange} fullWidth />
       <TextField label="Core Services" name="services" value={formData.services} onChange={handleChange} fullWidth multiline rows={4} />

@@ -136,9 +136,10 @@ const BusinessCard = ({ card, onEdit, onDelete }) => {
           <TextField label="Title" name="title" value={editedData.title} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Company" name="company" value={editedData.company} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Email" name="email" value={editedData.email} onChange={handleChange} fullWidth required margin="dense" />
+	  <TextField label="Phone" name="phone" value={editedData.phone} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Website" name="website" value={editedData.website} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Linkedin" name="linkedin" value={editedData.linkedin} onChange={handleChange} fullWidth required margin="dense" />
-          <TextField label="Twitter" name="twitter" value={editedData.twitter} onChange={handleChange} fullWidth required margin="dense" />
+          <TextField label="X" name="x" value={editedData.x} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Instagram" name="instagram" value={editedData.instagram} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Facebook" name="facebook" value={editedData.facebook} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Core Services" name="services" value={editedData.services} onChange={handleChange} fullWidth required margin="dense" />
@@ -153,7 +154,7 @@ const BusinessCard = ({ card, onEdit, onDelete }) => {
             margin="dense"
           >
             <MenuItem value="template1">Template 1</MenuItem>
-            <MenuItem value="template2">Template 2</MenuItem>
+            <MenuItem value="template2">Dont Use</MenuItem>
           </TextField>
           <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
             <Button onClick={handleEditSave} variant="contained" color="primary">Save</Button>
