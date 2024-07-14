@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material';
 import QRCode from 'qrcode.react';
 import qrcode from 'qrcode';
+import { Base64 } from 'js-base64';
 
 const CardTemplate1 = ({ card }) => {
   const handleQRCodeOpen = () => {
@@ -44,10 +45,12 @@ const CardTemplate1 = ({ card }) => {
   };
 
   const handleVCardDownload = () => {
+    const base64Image = card.profilePicture ? Base64.encode(card.profilePicture) : '';
     const vCardData = `
       BEGIN:VCARD
       VERSION:3.0
       FN:${card.name}
+      N:${card.name};;;
       ORG:${card.company}
       TITLE:${card.title}
       TEL;TYPE=work:${card.phone}
@@ -57,7 +60,7 @@ const CardTemplate1 = ({ card }) => {
       ${card.x ? `X-SOCIALPROFILE;type=twitter:${card.x}\n` : ''}
       ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
       ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
-      PHOTO;VALUE=URL:${card.profilePicture || ''}
+      ${base64Image ? `PHOTO;TYPE=JPEG;ENCODING=b:${base64Image}\n` : ''}
       NOTE:Core Services:${card.services || ''}
       END:VCARD
     `.trim().replace(/\n\s*/g, '\n');
