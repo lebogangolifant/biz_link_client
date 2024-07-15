@@ -83,8 +83,7 @@ const CreateCard = ({ onCreateCard, folders = [], onEditCard, setShowForm, owner
   return (
     <Box>
       <TextField label="Folder Name" value={folderName} onChange={(e) => setFolderName(e.target.value)} fullWidth />
-      <TextField label="Profile Picture URL" name="profilePicture" value={formData.profilePicture} onChange={handleChange} fullWidth error={!!errors.profilePicture}
-        helperText={errors.profilePicture} required />
+      <TextField label="Profile Picture" name="profilePicture" value={formData.profilePicture} onChange={handleChange} fullWidth />
       <TextField label="Name" name="name" value={formData.name} onChange={handleChange} fullWidth error={!!errors.name} helperText={errors.name} required />
       <TextField label="Title" name="title" value={formData.title} onChange={handleChange} fullWidth error={!!errors.title} helperText={errors.title} required />
       <TextField label="Company" name="company" value={formData.company} onChange={handleChange} fullWidth error={!!errors.company} helperText={errors.company} required />

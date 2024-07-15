@@ -131,8 +131,8 @@ const BusinessCard = ({ card, onEdit, onDelete }) => {
         >
           <Typography variant="h6" id="edit-card-modal-title">Edit Business Card</Typography>
           <Divider sx={{ my: 1 }} />
-          <TextField label="Profile Picture" name="profilepicture" value={editedData.profilepicture} onChange={handleChange} fullWidth required margin="dense" />
-          <TextField label="Name" name="name" value={editedData.name} onChange={handleChange} fullWidth required margin="dense" />
+          <TextField label="Profile Picture" name="profilePicture" value={editedData.profilePicture} onChange={handleChange} fullWidth required margin="dense" autocomplete="off" />
+          <TextField label="Name" name="name" value={editedData.name} onChange={handleChange} fullWidth required margin="dense" autocomplete="name"/>
           <TextField label="Title" name="title" value={editedData.title} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Company" name="company" value={editedData.company} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Email" name="email" value={editedData.email} onChange={handleChange} fullWidth required margin="dense" />
