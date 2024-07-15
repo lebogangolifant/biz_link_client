@@ -1,3 +1,4 @@
+// src/components/admin/CardTemplate1.js
 import React from 'react';
 import { Card, CardContent, Typography, Divider, Box, IconButton } from '@mui/material';
 import {
@@ -15,7 +16,6 @@ import {
 } from '@mui/icons-material';
 import QRCode from 'qrcode.react';
 import qrcode from 'qrcode';
-import { Base64 } from 'js-base64';
 
 const CardTemplate1 = ({ card }) => {
   const handleQRCodeOpen = () => {
@@ -44,8 +44,28 @@ const CardTemplate1 = ({ card }) => {
     window.open(card.website, '_blank');
   };
 
-  const handleVCardDownload = () => {
-    const base64Image = card.profilePicture ? Base64.encode(card.profilePicture) : '';
+  const handleVCardDownload = async () => {
+    let base64Image = '';
+    if (card.profilePicture) {
+      try {
+        const response = await fetch(card.profilePicture);
+        const blob = await response.blob();
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+          base64Image = reader.result.split(',')[1];
+          downloadVCard(base64Image);
+        };
+      } catch (error) {
+        console.error('Error fetching profile picture:', error);
+        downloadVCard('');
+      }
+    } else {
+      downloadVCard('');
+    }
+  };
+  
+  const downloadVCard = (base64Image) => {
     const vCardData = `
       BEGIN:VCARD
       VERSION:3.0
