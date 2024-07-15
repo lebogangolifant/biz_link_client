@@ -45,25 +45,32 @@ const CardTemplate1 = ({ card }) => {
   };
 
   const handleVCardDownload = async () => {
-    let base64Image = '';
-    if (card.profilePicture) {
-      try {
-        const response = await fetch(card.profilePicture);
-        const blob = await response.blob();
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-          base64Image = reader.result.split(',')[1];
-          downloadVCard(base64Image);
-        };
-      } catch (error) {
-        console.error('Error fetching profile picture:', error);
-        downloadVCard('');
-      }
-    } else {
+  let base64Image = '';
+  if (card.profilePicture) {
+    try {
+      const response = await fetch(card.profilePicture);
+      const blob = await response.blob();
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        const jpegDataUrl = canvas.toDataURL('image/jpeg');
+        base64Image = jpegDataUrl.split(',')[1];
+        downloadVCard(base64Image);
+      };
+      img.src = URL.createObjectURL(blob);
+    } catch (error) {
+      console.error('Error fetching profile picture:', error);
       downloadVCard('');
     }
-  };
+  } else {
+    downloadVCard('');
+  }
+};
   
   const downloadVCard = (base64Image) => {
     const vCardData = `
