@@ -6,6 +6,8 @@ import {
   Phone as PhoneIcon,
   Language as WebsiteIcon,
   LinkedIn as LinkedInIcon,
+  GitHub as GitHubIcon,
+  Telegram as TelegramIcon,
   X as XIcon,
   Instagram as InstagramIcon,
   Facebook as FacebookIcon,
@@ -84,6 +86,8 @@ const CardTemplate1 = ({ card }) => {
       EMAIL:${card.email}
       URL:${card.website}
       ${card.linkedin ? `X-SOCIALPROFILE;type=linkedin:${card.linkedin}\n` : ''}
+      ${card.github ? `X-SOCIALPROFILE;type=github:${card.github}\n` : ''}
+      ${card.telegram ? `X-SOCIALPROFILE;type=telegram:${card.telegram}\n` : ''}
       ${card.x ? `X-SOCIALPROFILE;type=twitter:${card.x}\n` : ''}
       ${card.instagram ? `X-SOCIALPROFILE;type=instagram:${card.instagram}\n` : ''}
       ${card.facebook ? `X-SOCIALPROFILE;type=facebook:${card.facebook}\n` : ''}
@@ -145,6 +149,16 @@ const CardTemplate1 = ({ card }) => {
             {card.linkedin && (
               <IconButton>
                 <LinkedInIcon />
+              </IconButton>
+            )}
+            {card.github && (
+              <IconButton>
+                <GitHubIcon />
+              </IconButton>
+            )}
+            {card.telegram && (
+              <IconButton>
+                <TelegramIcon />
               </IconButton>
             )}
             {card.x && (

@@ -139,6 +139,8 @@ const BusinessCard = ({ card, onEdit, onDelete }) => {
 	  <TextField label="Phone" name="phone" value={editedData.phone} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Website" name="website" value={editedData.website} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Linkedin" name="linkedin" value={editedData.linkedin} onChange={handleChange} fullWidth required margin="dense" />
+          <TextField label="Github" name="github" value={editedData.github} onChange={handleChange} fullWidth required margin="dense" />
+          <TextField label="Telegram" name="telegram" value={editedData.telegram} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="X" name="x" value={editedData.x} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Instagram" name="instagram" value={editedData.instagram} onChange={handleChange} fullWidth required margin="dense" />
           <TextField label="Facebook" name="facebook" value={editedData.facebook} onChange={handleChange} fullWidth required margin="dense" />
