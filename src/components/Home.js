@@ -79,7 +79,7 @@ const Home = () => {
             biz_link
           </Typography>
           <Button component={Link} to="/login" color="inherit">Login</Button>
-          <Button component={Link} to="/register" color="inherit">Register</Button>
+	  {/*<Button component={Link} to="/register" color="inherit">Register</Button>*/}
         </Toolbar>
       </AppBar>
       <Container sx={{ mt: 8 }}>

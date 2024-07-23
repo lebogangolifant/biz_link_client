@@ -114,9 +114,9 @@ const Login = () => {
           </Box>
           {error && <Typography color="error" align="center" sx={{ mt: 2 }}>{error}</Typography>}
           {success && <Typography color="primary" align="center" sx={{ mt: 2 }}>{success}</Typography>}
-          <Typography variant="body1" align="center" sx={{ mt: 2 }}>
+	  {/*<Typography variant="body1" align="center" sx={{ mt: 2 }}>
             Don't have an account? <Link to="/register">Register</Link>
-          </Typography>
+          </Typography>*/}
         </Box>
       </Container>
       <Box sx={{ mt: 'auto', py: 2, textAlign: 'center' }}>
