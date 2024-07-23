@@ -90,7 +90,7 @@ const Home = () => {
           Create a VCard and generate a Dynamic QR code for your NFC card with ease. NFC business cards offer enhanced durability and allow recipients to access your contact information effortlessly, with no need to reprint.
         </Typography>
         <Button 
-          href="https://biz-link-server-6f94518ef217.herokuapp.com/api/cards/6693caa7bf2cdffa4dc2bc0c" 
+          href="https://biz-link-server-6f94518ef217.herokuapp.com/api/cards/669a4208b0b355909ebfa727" 
           target="_blank" 
           variant="outlined" 
           color="primary" 
