@@ -1,18 +1,19 @@
-// client/src/AuthContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 // Create a context for authentication
 const AuthContext = createContext();
 
-// AuthProvider component to wrap around the parts of your app that need access to authentication
+// AuthProvider component provides authentication state and functions to its children.
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Initialize user state as null
+  // State to hold the current user. Initially, it is set to null.
+  const [user, setUser] = useState(null);
 
-  // Function to simulate login and set user data (replace with actual login logic)
+  // Function to simulate user login and update the user state.
   const login = (userData) => {
-    setUser(userData); // In a real application, fetch and set user data from an API
+    setUser(userData); // Set the user state with the provided userData
   };
 
+  // Provide the user state and login function to the rest of the app.
   return (
     <AuthContext.Provider value={{ user, login }}>
       {children}
@@ -20,5 +21,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use the AuthContext
+// Custom hook to access authentication context values.
 export const useAuth = () => useContext(AuthContext);

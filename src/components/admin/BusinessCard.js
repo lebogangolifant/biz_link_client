@@ -4,29 +4,37 @@ import CardTemplate1 from './CardTemplate1';
 import CardTemplate2 from './CardTemplate2';
 
 const BusinessCard = ({ card, onEdit, onDelete }) => {
+  // Theme hook for theming
   const theme = useTheme();
+
+  // State to manage modal visibility and edited card data
   const [editOpen, setEditOpen] = useState(false);
   const [editedData, setEditedData] = useState({ ...card });
   const [showContent, setShowContent] = useState(true);
 
+  // Toggle the visibility of the card content
   const toggleContent = () => {
     setShowContent(prevState => !prevState);
   };
 
+  // Open the edit modal and set the current card data for editing
   const handleEditOpen = () => {
     setEditedData({ ...card });
     setEditOpen(true);
   };
 
+  // Close the edit modal
   const handleEditClose = () => {
     setEditOpen(false);
   };
 
+  // Save the edited data and close the modal
   const handleEditSave = () => {
     onEdit(editedData);
     setEditOpen(false);
   };
 
+  // Handle changes in the form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedData(prevData => ({
@@ -35,6 +43,7 @@ const BusinessCard = ({ card, onEdit, onDelete }) => {
     }));
   };
 
+  // Render the appropriate template based on the card's template type
   const renderTemplate = () => {
     switch (card.template) {
       case 'template1':

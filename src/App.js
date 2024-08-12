@@ -12,8 +12,10 @@ import ResetPassword from './components/auth/ResetPassword';
 import CardDetails from './components/CardDetails';
 import CardTemplate1 from './components/admin/CardTemplate1';
 
-function App() {	
+function App() {
+  // Retrieve the current theme from the ThemeContext	
   const { theme } = useTheme();
+  // Create a Material-UI theme based on the current theme mode (light or dark)
   const muiTheme = createTheme({
     palette: {
       mode: theme,
@@ -21,10 +23,14 @@ function App() {
   });
 
   return (
+      // Apply the theme to the entire application		   
       <ThemeProvider theme={muiTheme}>
+        {/* Apply global CSS baseline for consistent styling */}
         <CssBaseline />
+	{/* Set up the Router to handle navigation within the application */}
         <Router>
           <Routes>
+	    {/* Define routes and their corresponding components */}
             <Route path="/" element={<Home />} />
             <Route path="/admin" element={<AdminPanel />} />
             <Route path="/login" element={<Login />} />

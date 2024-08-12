@@ -1,17 +1,20 @@
-//client/src/components/admin/Folder.js
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Divider, Grid, useTheme } from '@mui/material';
 import BusinessCard from './BusinessCard';
 
 const Folder = ({ folder, onEditFolderName, onEditCard, onDeleteCard }) => {
+  // Theme hook for consistent styling based on theme mode (dark/light)	
   const theme = useTheme();
+  // State for managing folder name editing mode and current folder name
   const [editMode, setEditMode] = useState(false);
   const [folderName, setFolderName] = useState(folder.name);
 
+  // Enable editing mode to allow folder name modification
   const handleEditFolderName = () => {
     setEditMode(true);
   };
 
+   // Save the updated folder name if it's not empty and exit editing mode
    const handleSaveFolderName = () => {
      if (folderName.trim() !== '') {
        onEditFolderName(folder._id, folderName);
@@ -19,6 +22,7 @@ const Folder = ({ folder, onEditFolderName, onEditCard, onDeleteCard }) => {
      setEditMode(false);
    };
 
+  // Update the folder name state as the user types 
   const handleChange = (e) => {
     setFolderName(e.target.value);
   };

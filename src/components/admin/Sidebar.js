@@ -1,4 +1,3 @@
-// src/components/admin/Sidebar.js
 import React from 'react';
 import { List, ListItem, ListItemIcon, ListItemText, Drawer, IconButton, Divider, Box } from '@mui/material';
 import { Home, WorkOutline, ChevronLeft as ChevronLeftIcon, Brightness4, Brightness7, ExitToApp } from '@mui/icons-material';
@@ -6,9 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Sidebar = ({ open, toggleSidebar }) => {
+  // Access theme and toggleTheme function from ThemeContext	
   const { theme, toggleTheme } = useTheme();
+  // Hook for navigation
   const navigate = useNavigate();
 
+  // Handle user logout by clearing the token and redirecting to home page
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/');

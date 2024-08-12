@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import axios from '../../api'; // Import your axios instance
+import axios from '../../api'; // Import the custom axios instance for API calls
 import { Container, TextField, Button, Typography, Box, AppBar, Toolbar, Divider } from '@mui/material';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 
+// Define validation schema for the form using yup
 const validationSchema = yup.object({
   email: yup
     .string()
@@ -13,9 +14,11 @@ const validationSchema = yup.object({
 });
 
 const ForgotPassword = () => {
+  // Local state for handling success and error messages	
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  // Initialize Formik for form management
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -23,6 +26,7 @@ const ForgotPassword = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
+        // Send POST request to reset password
         await axios.post('/auth/reset-password-request', { email: values.email });
         setSuccess('Password reset instructions sent to your email.');
         setError('');
@@ -37,6 +41,7 @@ const ForgotPassword = () => {
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#121212', color: '#fff', fontFamily: 'Lato, sans-serif' }}>
       <AppBar position="static" sx={{ backgroundColor: '#222' }}>
         <Toolbar>
+	  {/* Logo and title in the AppBar */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
             <img src="../../link-round.svg" alt="Logo" style={{ marginRight: 8, height: 40 }} />
             biz_link
@@ -48,6 +53,7 @@ const ForgotPassword = () => {
         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
           Forgot Password
         </Typography>
+	{/* Form for submitting email to request password reset */}
         <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 4 }}>
           <TextField
             label="Email"
@@ -82,6 +88,7 @@ const ForgotPassword = () => {
           {success && <Typography color="primary" align="center" sx={{ mt: 2 }}>{success}</Typography>}
         </Box>
       </Container>
+      {/* Footer section */}
       <Box sx={{ mt: 'auto', py: 2, textAlign: 'center' }}>
         <Divider sx={{ borderColor: '#ccc', width: '50%', mx: 'auto', mb: 2 }} />
         <Typography variant="body2">

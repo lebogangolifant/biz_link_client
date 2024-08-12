@@ -5,23 +5,28 @@ import SearchIcon from '@mui/icons-material/Search';
 import CreateCard from './CreateCard';
 import Folder from './Folder';
 import Sidebar from './Sidebar';
-import api from '../../api';
+import api from '../../api'; // Import the custom axios instance for API calls
 import { useAuth } from '../../AuthContext';
 
+// AdminPanel component to manage folders and business cards
 const AdminPanel = () => {
+  // Auth context to get the current user
   const { user } = useAuth();
+
+  // State hooks for managing form visibility, folders data, search query, and sidebar state
   const [showForm, setShowForm] = useState(false);
   const [folders, setFolders] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  // Fetch folders data from the server when the component mounts
   useEffect(() => {
     const fetchFolders = async () => {
       try {
         const response = await api.get('/folders');
         const fetchedFolders = response.data.map(folder => ({
           ...folder,
-          cards: folder.cards || []
+          cards: folder.cards || []  // Ensure cards array exists
         }));
         setFolders(fetchedFolders);
       } catch (error) {
@@ -30,18 +35,22 @@ const AdminPanel = () => {
     };
 
     fetchFolders();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once
 
+  // Toggle the visibility of the create card form
   const handleToggleForm = () => {
     setShowForm(prevState => !prevState);
   };
-
+ 
+  // Toggle the sidebar open/close state
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
+  // Handle creating a new card within a folder
   const handleCreateCard = async (formData, folderName) => {
     try {
+      // Check if the folder exists; if not, create it
       let existingFolder = folders.find(folder => folder.name === folderName);
       if (!existingFolder) {
         const folderResponse = await api.post('/folders', { name: folderName });
@@ -49,6 +58,7 @@ const AdminPanel = () => {
         setFolders(prevFolders => [...prevFolders, existingFolder]);
       }
 
+      // Add the new card to the folder
       const response = await api.post(`/folders/${existingFolder._id}/cards`, formData);
       const newCard = response.data;
 
@@ -67,6 +77,7 @@ const AdminPanel = () => {
       setShowForm(false);
     } catch (error) {
       console.error('Error creating card:', error);
+      // Log detailed error information for debugging
       if (error.response) {
         console.log('Response Data:', error.response.data);
         console.log('Response Status:', error.response.status);
@@ -79,6 +90,7 @@ const AdminPanel = () => {
     }
   };
 
+  // Handle editing the folder name
   const handleEditFolderName = async (folderId, newFolderName) => {
     try {
       const response = await api.put(`/folders/${folderId}`, { name: newFolderName });
@@ -91,6 +103,7 @@ const AdminPanel = () => {
     }
   };
 
+  // Handle editing a card within a folder
   const handleEditCard = async (folderId, editedCard) => {
     try {
       await api.put(`/cards/${editedCard._id}`, editedCard);
@@ -110,6 +123,7 @@ const AdminPanel = () => {
     }
   };
 
+  // Handle deleting a card from a folder
   const handleDeleteCard = async (folderId, deletedCardId) => {
     try {
       await api.delete(`/cards/${deletedCardId}`);
@@ -129,6 +143,7 @@ const AdminPanel = () => {
     }
   };
 
+  // Filter folders based on the search query
   const filteredFolders = folders.map(folder => ({
     ...folder,
     cards: folder.cards.filter(card =>
@@ -137,6 +152,7 @@ const AdminPanel = () => {
     )
   }));
 
+  // Determine which folders to display based on search query
   const foldersToDisplay = searchQuery ? filteredFolders : folders;
 
   return (

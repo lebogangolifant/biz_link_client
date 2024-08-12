@@ -20,6 +20,7 @@ import QRCode from 'qrcode.react';
 import qrcode from 'qrcode';
 
 const CardTemplate1 = ({ card }) => {
+  // Open a new window displaying the QR code for the VCard URL	
   const handleQRCodeOpen = () => {
     const qrCodeUrl = `${process.env.REACT_APP_BASE_URL}/cards/${card._id}`;
     qrcode.toDataURL(qrCodeUrl, (err, url) => {
@@ -32,20 +33,24 @@ const CardTemplate1 = ({ card }) => {
     });
   };
 
+  // Open the default email client to send an email with the VCard's email address
   const handleEmailShare = () => {
     const subject = 'Business Card';
     const body = 'Check out my business card!';
     window.location.href = `mailto:${card.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
+  // Initiate a phone call to the VCard's phone number
   const handlePhoneSave = () => {
     window.location.href = `tel:${card.phone}`;
   };
 
+  // Open the VCard's website in a new tab
   const handleWebsiteSave = () => {
     window.open(card.website, '_blank');
   };
 
+  // Download the VCard as a .vcf file, including a base64-encoded profile picture if available
   const handleVCardDownload = async () => {
   let base64Image = '';
   if (card.profilePicture) {
@@ -74,6 +79,7 @@ const CardTemplate1 = ({ card }) => {
   }
 };
   
+  // Create and download the .vcf file containing VCard details
   const downloadVCard = (base64Image) => {
     const vCardData = `
       BEGIN:VCARD

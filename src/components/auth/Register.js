@@ -1,11 +1,11 @@
- // client/src/components/auth/Register.js
 import React, { useState } from 'react';
-import axios from '../../api';
+import axios from '../../api'; // Import the custom axios instance for making API requests
 import { Container, TextField, Button, Typography, Box, AppBar, Toolbar, Divider } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+// Define validation schema for the registration form using yup
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Enter a valid email').required('Email is required'),
@@ -16,10 +16,12 @@ const validationSchema = yup.object({
 });
 
 const Register = () => {
+  // Local state for handling success and error messages	
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
+  // Initialize Formik for form handling
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -30,6 +32,7 @@ const Register = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
+        // Send POST request to the registration endpoint with form values
         const response = await axios.post('/auth/register', values);
         setSuccess(`Registration successful for ${response.data.name}! Redirecting to login page...`);
         setTimeout(() => {
@@ -45,6 +48,7 @@ const Register = () => {
     <Box sx={{ backgroundColor: '#121212', minHeight: '100vh', color: '#fff', fontFamily: 'Lato, sans-serif', display: 'flex', flexDirection: 'column' }}>
       <AppBar position="static" sx={{ backgroundColor: '#222' }}>
         <Toolbar>
+	  {/* Logo and title in the AppBar */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
             <img src="../../link-round.svg" alt="Logo" style={{ marginRight: 8, height: 40 }} />
             biz_link
@@ -56,6 +60,7 @@ const Register = () => {
         <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
           Register
         </Typography>
+	{/* Registration form */}
         <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 4 }}>
           <TextField
             label="Name"
@@ -166,6 +171,7 @@ const Register = () => {
           </Typography>
         </Box>
       </Container>
+      {/* Footer section */}
       <Box sx={{ mt: 'auto', py: 2, textAlign: 'center' }}>
         <Divider sx={{ borderColor: '#ccc', width: '50%', mx: 'auto', mb: 2 }} />
         <Typography variant="body2">

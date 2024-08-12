@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { Button, Container, Typography, Box, AppBar, Toolbar, FormControl, InputLabel, Select, MenuItem, TextField, Grid } from '@mui/material';
 import { useTheme } from './contexts/ThemeContext';
 import './styles/App.css';
-import api from '../api';
+import api from '../api'; // Import the custom axios instance for making API requests
 
 const Home = () => {
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
 
-  // State to manage form visibility and form data
+  // State hooks to manage form visibility and form data
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -21,6 +21,7 @@ const Home = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
+  // Handle changes in input fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -32,10 +33,11 @@ const Home = () => {
     setFormData({ ...formData, file });
   }; */
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
+    // Validate form data
     let errors = {};
     if (!formData.email) errors.email = 'Email is required';
     if (!formData.companyName) errors.companyName = 'Company Name / Individual is required';
@@ -48,7 +50,7 @@ const Home = () => {
     }
 
     try {
-      // Submit form data to backend
+      // Prepare form data for submission
       const formDataToSend = new FormData();
       formDataToSend.append('email', formData.email);
       formDataToSend.append('companyName', formData.companyName);
@@ -59,9 +61,10 @@ const Home = () => {
         formDataToSend.append('file', formData.file);
       }
 
+      // Submit form data to the backend
       await api.post('/orders', formDataToSend);
 
-      // Show success message or redirect as needed
+      // Show success message and hide the form
       alert('Order/Inquire submitted successfully!');
       setShowForm(false);
     } catch (error) {
@@ -72,6 +75,7 @@ const Home = () => {
 
   return (
     <Box sx={{ backgroundColor: '#121212', minHeight: '100vh', color: '#fff', fontFamily: 'Lato, sans-serif' }}>
+      {/* AppBar component with logo and navigation buttons */}
       <AppBar position="static" sx={{ backgroundColor: '#222' }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
@@ -79,16 +83,19 @@ const Home = () => {
             biz_link
           </Typography>
           <Button component={Link} to="/login" color="inherit">Login</Button>
-	  {/*<Button component={Link} to="/register" color="inherit">Register</Button>*/}
+	  <Button component={Link} to="/register" color="inherit">Register</Button>
         </Toolbar>
       </AppBar>
+      {/* Main content container */}
       <Container sx={{ mt: 8 }}>
+        {/* Heading and description */}
         <Typography variant="h4" sx={{ mb: 4, textAlign: 'center', fontWeight: 'bold' }}>
           Dynamic QR Code VCard Manager
         </Typography>
         <Typography variant="body1" sx={{ mb: 4, fontSize: '1.1rem', lineHeight: 1.8 }}>
           Create a VCard and generate a Dynamic QR code for your NFC card with ease. NFC business cards offer enhanced durability and allow recipients to access your contact information effortlessly, with no need to reprint.
         </Typography>
+	{/* Buttons for demo and ordering cards */}
         <Button 
           href="https://biz-link-server-6f94518ef217.herokuapp.com/api/cards/669a4208b0b355909ebfa727" 
           target="_blank" 
@@ -104,7 +111,7 @@ const Home = () => {
           Order Card
         </Button>
         
-         {/* Order Form */}
+        {/* Conditional rendering of the order form */}
         {showForm && (
           <Box sx={{ p: 2, backgroundColor: isDarkMode ? '#333' : '#fff', borderRadius: 2 }}>
             <Typography variant="h6" gutterBottom sx={{ fontFamily: 'Roboto, sans-serif', fontWeight: 500, color: isDarkMode ? '#fff' : '#000' }}>
@@ -198,6 +205,7 @@ const Home = () => {
           </Box>
         )}
 
+	{/* Information sections with feature descriptions */}
         <Grid container spacing={4} sx={{ mt: 8 }}>
           <Grid item xs={12} md={4}>
             <Box sx={{ backgroundColor: '#333', p: 4, borderRadius: 4 }}>
@@ -354,7 +362,7 @@ const Home = () => {
           </Typography>
           <Button component="a" href="https://github.com/lebogangolifant/biz_link_server" target="_blank" rel="noopener noreferrer" variant="outlined" color="primary" size="large">Contact Support</Button>
         </Box>
-
+        {/* Footer section with links */}
         <Box sx={{ mt: 8, borderTop: '1px solid #ccc', py: 2, textAlign: 'center' }}>
           <Typography variant="body2">
             &copy; {new Date().getFullYear()} biz_link. All Rights Reserved. | <a href ="https://github.com/lebogangolifant/biz_link_server" target="_blank" rel="noopener noreferrer" style={{ color: '#fff' }}>View Source Code</a>

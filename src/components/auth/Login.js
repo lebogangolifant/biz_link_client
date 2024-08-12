@@ -1,21 +1,23 @@
-// client/src/components/auth/Login.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from '../../api'; // Use the instance created
+import axios from '../../api'; // Import the custom axios instance for API calls
 import { Container, TextField, Button, Typography, Box, AppBar, Toolbar, Divider } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+// Define validation schema for the form using yup
 const validationSchema = yup.object({
   email: yup.string().email('Enter a valid email').required('Email is required'),
   password: yup.string().min(8, 'Password should be of minimum 8 characters length').required('Password is required'),
 });
 
 const Login = () => {
+  // Local state for handling success and error messages	
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
+  // Initialize Formik for form management
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -24,7 +26,9 @@ const Login = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
+        // Send POST request to login endpoint with form values
         const response = await axios.post('/auth/login', values);
+	// Save the received token to localStorage
         localStorage.setItem('token', response.data.token);
         setSuccess('Login successful! Redirecting...');
         setTimeout(() => {
@@ -40,6 +44,7 @@ const Login = () => {
     <Box sx={{ backgroundColor: '#121212', minHeight: '100vh', color: '#fff', fontFamily: 'Open Sans, sans-serif', display: 'flex', flexDirection: 'column' }}>
       <AppBar position="static" sx={{ backgroundColor: '#222' }}>
         <Toolbar>
+	  {/* Logo and title in the AppBar */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
             <img src="../../link-round.svg" alt="Logo" style={{ marginRight: 8, height: 40 }} />
             biz_link
@@ -105,6 +110,7 @@ const Login = () => {
           <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
             Login
           </Button>
+	  {/* Link to navigate to forgot password page */}
           <Box sx={{ textAlign: 'center', mt: 2 }}>
             <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
               <Button variant="outlined" color="secondary">
@@ -114,11 +120,12 @@ const Login = () => {
           </Box>
           {error && <Typography color="error" align="center" sx={{ mt: 2 }}>{error}</Typography>}
           {success && <Typography color="primary" align="center" sx={{ mt: 2 }}>{success}</Typography>}
-	  {/*<Typography variant="body1" align="center" sx={{ mt: 2 }}>
+	  <Typography variant="body1" align="center" sx={{ mt: 2 }}>
             Don't have an account? <Link to="/register">Register</Link>
-          </Typography>*/}
+          </Typography>
         </Box>
       </Container>
+      {/* Footer section */}
       <Box sx={{ mt: 'auto', py: 2, textAlign: 'center' }}>
         <Divider sx={{ borderColor: '#ccc', width: '50%', mx: 'auto', mb: 2 }} />
         <Typography variant="body2">
