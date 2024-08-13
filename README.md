@@ -2,7 +2,7 @@
 
 ## Overview
 
-**biz_link** is a dynamic QR code generator for virtual business cards (vCards). The application allows users to create, manage, and order NFC-enabled business cards with embedded QR codes. The QR codes link to a dynamically updated vCard profile that can be accessed via NFC technology or by scanning the code.
+**biz_link** is a dynamic QR code generator for VCard. The application allows users to create, manage, and order NFC-enabled business cards with embedded QR codes. The QR codes link to a dynamically updated vCard profile that can be accessed via NFC technology or by scanning the code.
 
 ## Table of Contents
 
@@ -45,8 +45,8 @@
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/lebogangolifant/biz_link.git
-   cd biz_link
+   git clone https://github.com/lebogangolifant/biz_link_client.git
+   cd biz_link_client
    ```
 
 2. **Install Dependencies**
