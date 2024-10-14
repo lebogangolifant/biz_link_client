@@ -97,7 +97,7 @@ const Home = () => {
         </Typography>
 	{/* Buttons for demo and ordering cards */}
         <Button 
-          href="https://biz-link-server-6f94518ef217.herokuapp.com/api/cards/669a4208b0b355909ebfa727" 
+          href="https://biz-link-server.vercel.app/api/cards/669a4208b0b355909ebfa727" 
           target="_blank" 
           variant="outlined" 
           color="primary" 
