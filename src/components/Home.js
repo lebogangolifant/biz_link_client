@@ -360,7 +360,7 @@ const Home = () => {
           <Typography variant="body1" sx={{ mb: 2 }}>
             Having issues, suggestions and feedback?
           </Typography>
-          <Button component="a" href="https://github.com/lebogangolifant/biz_link_server" target="_blank" rel="noopener noreferrer" variant="outlined" color="primary" size="large">Contact Support</Button>
+          <Button component="a" href="https://github.com/lebogangolifant/biz_link_client" target="_blank" rel="noopener noreferrer" variant="outlined" color="primary" size="large">Contact Support</Button>
         </Box>
         {/* Footer section with links */}
         <Box sx={{ mt: 8, borderTop: '1px solid #ccc', py: 2, textAlign: 'center' }}>
